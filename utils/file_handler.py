@@ -12,7 +12,10 @@ __base_url  = 'https://s3.ap-south-1.amazonaws.com/hermes-responses/'
 
 def download_if_absent(url, path):
     file_data = requests.get(url)
-    file_name, ext = path.split('.')
+
+    # Assume the file to be of type .mp3 if there is no extension
+    # provided.
+    file_name, ext = path.split('.') if '.' in path else path, '.mp3'
 
     if os.path.exists(__base_path + '/' + path):
         return file_name
