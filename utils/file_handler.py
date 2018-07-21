@@ -10,12 +10,21 @@ __base_url  = 'https://s3.ap-south-1.amazonaws.com/hermes-responses/'
 'icici_demo/common/dtmf_call_language.mp3'
 
 
+def split_file_extension(path):
+    """
+    default second element of the tuple is .mp3
+    :param path: str
+    :return: (str, str)
+    """
+    return (path[:-4], path[-3:]) if '.' == path[-4] else (path, '.mp3')
+
+
 def download_if_absent(url, path):
     file_data = requests.get(url)
 
     # Assume the file to be of type .mp3 if there is no extension
     # provided.
-    file_name, ext = path.split('.') if '.' in path else path, '.mp3'
+    file_name, ext = split_file_extension(path)
 
     if os.path.exists(__base_path + '/' + path):
         return file_name
