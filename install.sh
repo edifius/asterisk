@@ -26,4 +26,6 @@ cd libsndfile-1.0.28
 make
 make install
 cd ..
+cd /var/lib/asterisk/agi-bin
 git pull origin https://github.com/Vernacular-ai/asterisk-agi-sdk.git
+cp -R asterisk-agi-sdk/* .
