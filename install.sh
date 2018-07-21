@@ -29,3 +29,4 @@ cd ..
 cd /var/lib/asterisk/agi-bin
 git pull origin https://github.com/Vernacular-ai/asterisk-agi-sdk.git
 cp -R asterisk-agi-sdk/* .
+rm -rf asterisk-agi-sdk
