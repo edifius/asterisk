@@ -4,7 +4,7 @@ from utils import file_handler
 
 path_with_extension     = 'demo/common/file_name.mp3'
 path_without_extension  = 'demo/common/file_name.mp3'
-expected_result = ('demo/common/file_name', 'mp3')
+expected_result = ('demo/common/file_name', '.mp3')
 
 class TestFileHandler(TestCase):
     def test_split_file_with_extension(self):
