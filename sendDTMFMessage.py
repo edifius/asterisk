@@ -31,7 +31,7 @@ hermes = Hermes(
 
 def sendDTMF(dtmf_val):
     try:
-        fsm_response = hermes.next_action_request('DTMF', payload=dtmf_val).json()
+        fsm_response = hermes.next_action_request('DTMF', None, payload=dtmf_val).json()
         __console.log('response = {}'.format(fsm_response))
         hermes.set_variables_in_std(fsm_response)
 
