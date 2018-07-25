@@ -1,4 +1,40 @@
 #!/usr/bin/env bash
+cat art.txt
+# ========================================================================================================================
+# Install if python path is provided
+# ========================================================================================================================
+if [ -z "$1" ];
+then
+echo "==================================================="
+echo "Python2.7 is necessary for running this script!"
+echo "Use the script like:"
+echo "sh install.sh /path/to/python2.7.*"
+echo "..."
+echo "or (this may not work for all devices)"
+echo "sh install.sh $(which python2.7)"
+echo "===================================================="
+fi
+# ========================================================================================================================
+
+# ========================================================================================================================
+# Remove pre-existing and create create custom symlink
+# and add to $PATH
+# ========================================================================================================================
+rm -f /usr/bin/vai-agi-python-path
+ln -s $1 /usr/bin/vai-agi-python-path
+cd ~
+if [$(ls -a | grep .bashrc)];
+then
+echo "$(cat .bashrc) $(echo $'\nexport PATH=/usr/bin/vai-agi-python-path:$PATH')" > .bashrc
+source .bashrc
+else
+echo "$(cat .bash_profile) $(echo $'\nexport PATH=/usr/bin/vai-agi-python-path:$PATH')" > .bash_profile
+source .bash_profile
+fi
+
+# ========================================================================================================================
+
+
 cd /
 yum install wget gcc openssl-devel bzip2-devel curl git sox
 # ========================================================================================================================
@@ -50,7 +86,7 @@ then
 echo "$(cat .bashrc) $(echo $'\nexport PATH=/usr/bin/ffmpeg:$PATH')" > .bashrc
 source .bashrc
 else
-echo "$(cat .bash_profile) $(echo $'\n#export PATH=/usr/bin/ffmpeg:$PATH')" > .bash_profile
+echo "$(cat .bash_profile) $(echo $'\nexport PATH=/usr/bin/ffmpeg:$PATH')" > .bash_profile
 source .bash_profile
 fi
 # ========================================================================================================================
