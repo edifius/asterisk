@@ -1,6 +1,7 @@
 import os
 import requests
 import sox
+from subprocess import Popen
 from utils.log import __console
 from constants.constants import MP3, GSM
 
@@ -34,9 +35,14 @@ def download_if_absent(url, path):
 
 
 def transform_sound_file(file_name, from_format, to_format):
-    __console.log('start conversion --> gsm')
+    intermediate_format = '.flac'
+    __console.log('start conversion', file_name, from_format, '-->', intermediate_format)
+    # PATCH: convert to .flac as intermediate
+    # as sox has support for .flac -> .gsm
+    Popen(['ffmpeg', '-i', file_name + from_format, file_name + intermediate_format])
+    __console.log('start conversion', file_name, intermediate_format,' --> .gsm')
     tfm = sox.Transformer()
-    tfm.build(file_name + from_format, file_name + to_format)
+    tfm.build(file_name + intermediate_format, file_name + to_format)
     __console.log('conversion ends')
 
 
