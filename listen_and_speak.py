@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/vai-agi-python-path
 import traceback
 from utils.log import __console
 from core import core

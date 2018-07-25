@@ -1,3 +1,4 @@
+#!/usr/bin/vai-agi-python-path
 import uuid
 import requests
 

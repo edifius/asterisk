@@ -1,3 +1,4 @@
+#!/usr/bin/vai-agi-python-path
 import numpy as np
 from constants import constants
 from utils.log import __console

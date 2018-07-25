@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/vai-agi-python-path
 import sys
 import dialplan
 from fsm_interface.hermes import Hermes
