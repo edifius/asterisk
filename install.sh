@@ -13,10 +13,10 @@ skip_install_libsndfile_flag="false"
 python_bin_path=""
 
 
-while getopts 'ip:' flag;
+while getopts 'ibcp:' flag;
 do
   case "${flag}" in
-    a) install_python_flag='true' ;;
+    i) install_python_flag='true' ;;
     b) skip_install_ffmpeg_flag='true' ;;
     c) skip_install_libsndfile_flag='true' ;;
     p) python_bin_path="${OPTARG}" ;;
