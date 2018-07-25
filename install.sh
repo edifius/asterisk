@@ -1,53 +1,35 @@
 #!/usr/bin/env bash
 cd /
-cat art/art.txt
+base64 -D <<<"H4sIAOvjWFsAA81VSY4DIQy89yusXHwYljt8BYk8hMePyzY06cksh0iTVisKuCiXyyY56C2e478F2PN6GSHG8Et8B9jy2FbpNSISjx8ATJSYmqPvgNOYMnLvKT+c7h2c6WkF3yoIwihvuYZOskxUVY0yI2PBe5gPFdFNRmB5M0FZiB9CkIl+qhEnOuBKytfQItOwPc0kgJbpEB96xt7QPN4c1jXsMpfZ8FjE3SL9qltug5KOGU8XMuRFMDfT4W5IU7BRsaew7EKHQYK2GflvCOetkAU9bYAWnvVs4EVGroSpJpq2MfIf5MJamXngPyvcOzHsy7DakpXuUJ71D8hYprhFBl5k5IpqtlLamFuHjUwDV1KLWQ4MjXknLAc+Wu8tF023oORQh2jKgZE8wYuMLAwm85GtKVVvivtBugtReVSyPm8yMlqjRVZnrVQkX7H6fcgtJe7sCV5k0w05zDHyZMeIzl7fhcbLNzeCKnIZeijrG9LpFNv0ipK7IqhVvwp1AxtZh0WPl4V4jagui42SDy72o9GaDJs2z5B4dlWhpSAJ2Y3R3x6s8gMYZMKRfFrDutBaKDD+8yUexdtqzxxyD/ipMfMh3QYVI+SdsIgVX8CGlf7ANH7CfvlP2fi+Pp6P/wC9gm3j9i36Xf5hj09Uwo62cggAAA==" | gunzip
 # ========================================================================================================================
 # Install if python path is provided
 # Usage:
 #   -i flag installs python 2.7.15
 #   -p requires /path/to/python2.7
 # ========================================================================================================================
-install_flag=""
+install_python_flag=""
+skip_install_ffmpeg_flag="false"
+skip_install_libsndfile_flag="false"
 python_bin_path=""
 
 
 while getopts 'ip:' flag;
 do
   case "${flag}" in
-    i) install_flag='true' ;;
+    a) install_python_flag='true' ;;
+    b) skip_install_ffmpeg_flag='true' ;;
+    c) skip_install_libsndfile_flag='true' ;;
     p) python_bin_path="${OPTARG}" ;;
-    *)  echo "==================================================="
-        echo "Python2.7 is necessary for running this script!"
-        echo "Use the script like:"
-        echo "sh install.sh -p /path/to/python2.7.*"
-        echo "..."
-        echo "or (this may not work for all devices)"
-        echo "sh install.sh -p $(which python2.7)"
-        echo "----------------------------------------------------"
-        echo "If you want python 2.7 installed with this script"
-        echo "run it like:"
-        echo "sh install.sh -i"
-        echo "===================================================="
+    *)  base64 -D <<<"H4sIALDoWFsAA72TwQrCMAyG732KCB4UnAcvguADePPiA3RdaoM1K23n2Ns7dGOT6kFFc2qakP/jJ9lu3w6xb6IpebVcAwVgVBiC9A3o0oOvmImPEE1bCsqTixNxCNh+YJeDpRNuhAgGiEOU1i7bZ+ZgOqsNKQOuHz8XIvsgxE5DU1ZQS47dMLjB3tWwgJqiGSMmMPSVsLQeZdGAkRccqXYokgvQ+uzwmMjmT034LYqlPHChyWKCo/6Ls+htecQa+lK/fkx454GXPHkVh02LZV/pWNKtUk68f27twV0BIcOWF6UDAAA=" | gunzip
     exit 1 ;;
   esac
 done
 
-if [ -z $install_flag ];
+if [ -z $install_python_flag ];
 then
     if [ -z $python_bin_path ];
     then
-        echo "==================================================="
-        echo "Python2.7 is necessary for running this script!"
-        echo "Use the script like:"
-        echo "sh install.sh -p /path/to/python2.7.*"
-        echo "..."
-        echo "or (this may not work for all devices)"
-        echo "sh install.sh -p $(which python2.7)"
-        echo "----------------------------------------------------"
-        echo "If you want python 2.7 installed with this script"
-        echo "run it like:"
-        echo "sh install.sh -i"
-        echo "===================================================="
+        base64 -D <<<"H4sIALDoWFsAA72TwQrCMAyG732KCB4UnAcvguADePPiA3RdaoM1K23n2Ns7dGOT6kFFc2qakP/jJ9lu3w6xb6IpebVcAwVgVBiC9A3o0oOvmImPEE1bCsqTixNxCNh+YJeDpRNuhAgGiEOU1i7bZ+ZgOqsNKQOuHz8XIvsgxE5DU1ZQS47dMLjB3tWwgJqiGSMmMPSVsLQeZdGAkRccqXYokgvQ+uzwmMjmT034LYqlPHChyWKCo/6Ls+htecQa+lK/fkx454GXPHkVh02LZV/pWNKtUk68f27twV0BIcOWF6UDAAA=" | gunzip
         exit 0
     fi
 fi
@@ -73,7 +55,7 @@ fi
 # ========================================================================================================================
 # Install python 2.7.15
 # ========================================================================================================================
-if [ "$install_flag" == "true" ];
+if [ "$install_python_flag" == "true" ];
 then
     cd /usr/src
     wget https://www.python.org/ftp/python/2.7.15/Python-2.7.15.tgz
@@ -110,35 +92,40 @@ fi
 # Refer to:
 # https://www.johnvansickle.com/ffmpeg/
 # if this section fails
-# ========================================================================================================================
-cd /
-wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz
-tar -xvf ffmpeg-release-64bit-static.tar.xz
-
-# ========================================================================================================================
+#
 # 1. Create symlink to ffmpeg binary
 # 2. Update $PATH to add ffmpeg in .bash_profile or .bashrc conditionally
 # ========================================================================================================================
-ln -s /ffmpeg-4.0.2-64bit-static/ffmpeg /usr/bin/ffmpeg
-if [ -f ~/.bashrc ];
+cd /
+if [ "$skip_install_ffmpeg_flag" == "false" ];
 then
-    echo "$(cat ~/.bashrc) $(echo $'\nexport PATH=/usr/bin/ffmpeg:$PATH')" > ~/.bashrc
-    source .bashrc
-else
-    echo "$(cat ~/.bash_profile) $(echo $'\nexport PATH=/usr/bin/ffmpeg:$PATH')" > ~/.bash_profile
-    source .bash_profile
+    wget https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz
+    tar -xvf ffmpeg-release-64bit-static.tar.xz
+    ln -s /ffmpeg-4.0.2-64bit-static/ffmpeg /usr/bin/ffmpeg
+    if [ -f ~/.bashrc ];
+    then
+        echo "$(cat ~/.bashrc) $(echo $'\nexport PATH=/usr/bin/ffmpeg:$PATH')" > ~/.bashrc
+        source .bashrc
+    else
+        echo "$(cat ~/.bash_profile) $(echo $'\nexport PATH=/usr/bin/ffmpeg:$PATH')" > ~/.bash_profile
+        source .bash_profile
+    fi
 fi
+
 # ========================================================================================================================
 
 # ========================================================================================================================
 # Build libsndfile for scikits.audiolab
 # ========================================================================================================================
-wget http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz
-tar -xvf libsndfile-1.0.28.tar.gz
-cd libsndfile-1.0.28
-./configure
-make
-make install
+if [ "$skip_install_libsndfile_flag" == "false" ];
+then
+    wget http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz
+    tar -xvf libsndfile-1.0.28.tar.gz
+    cd libsndfile-1.0.28
+    ./configure
+    make
+    make install
+fi
 # ========================================================================================================================
 
 # ========================================================================================================================
@@ -148,7 +135,8 @@ cd /var/lib/asterisk/agi-bin
 git clone https://github.com/Vernacular-ai/asterisk-agi-sdk.git
 cp -R asterisk-agi-sdk/* .
 rm -rf asterisk-agi-sdk
-pip install -r requirements.txt
+pip2.7 install -r requirements.txt
+pip2.7 install scikits.audiolab==0.11.0
 # ========================================================================================================================
-cat art/fin.txt
+base64 -D <<<"H4sIAIvjWFsAA61Uy47DIAy88xXWXnzhcYdfQQof4o9fP2hws+yuVOGSahK145nBIcDxiimlCBBO046UMgIpc2bM6wwzU0LVFaCALAA8wo12NWYmbVBGNn6rqEl9UmSXpNEMpTQWL15Q6F8Sl+KCorl6ze1av7aedWqfG/AT3Sm+wakZJecOsgA4jymWSZV+5tO36E6xePjSbLPBc2IqujYjeZz5YyRlinpHQM6rt93svinzdU3dpDGgpUGQzWCBHSLv1UGRidk0S0h8L3qqBdykJ6mxBpUbPxHoBi+vD5jzEM2oPW63Vf8hBB3VGGakJ1LNTpGDPALRpsFyxqTPmTa+ZiSX+Trx1waRU+TF6bASx/I4N7iJGsN7FLru1w45RQ4ygjQiR/bnibS67NAvJS3G1/mzblWA8A05NuBoowUAAA==" | gunzip
 #                                        *** FIN ***
