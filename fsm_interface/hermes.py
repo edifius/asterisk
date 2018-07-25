@@ -51,7 +51,7 @@ class Hermes(object):
         Fetch client configuration
         :returns: Configuration with next action defaults
         """
-        self.update_url('api/{client}/configuration/')
+        self.update_url('/api/{client}/configuration/')
         self.__console.log(self.url, self.headers)
         return requests.get(self.url, headers=self.headers, params=kwargs).json()
 
