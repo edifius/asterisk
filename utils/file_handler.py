@@ -1,8 +1,7 @@
 #!/usr/bin/vai-agi-python-path
 import os
 import requests
-import sox
-from subprocess import Popen
+import subprocess
 from utils.log import __console
 from constants.constants import MP3, GSM
 
@@ -40,10 +39,12 @@ def transform_sound_file(file_name, from_format, to_format):
     __console.log('start conversion', file_name, from_format, '-->', intermediate_format)
     # PATCH: convert to .flac as intermediate
     # as sox has support for .flac -> .gsm
-    Popen(['ffmpeg', '-i', file_name + from_format, file_name + intermediate_format])
+    subprocess.call(['ffmpeg', '-i', file_name + from_format, file_name + intermediate_format])
+
     __console.log('start conversion', file_name, intermediate_format,' --> .gsm')
-    tfm = sox.Transformer()
-    tfm.build(file_name + intermediate_format, file_name + to_format)
+    subprocess.call([
+        'sox', file_name + intermediate_format, '-r', '8000', '-c1', file_name + to_format
+    ])
     __console.log('conversion ends')
 
 
