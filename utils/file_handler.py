@@ -30,7 +30,7 @@ def download_if_absent(url, path):
         return file_name
     with open(__base_path + '/' + save_path, 'wb+') as f:
         f.write(file_data.content)
-        transform_sound_file(__base_path + '/'+ file_name, MP3, GSM)
+    transform_sound_file(__base_path + '/'+ file_name, MP3, GSM)
     return file_name
 
 
