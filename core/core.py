@@ -20,12 +20,12 @@ session_id      = get_stdn_var(stdin.SESSION_ID)
 client_id       = get_stdn_var(stdin.CLIENT_ID)
 access_token    = get_stdn_var(stdin.ACCESS_TOKEN)
 virtual_number  = get_stdn_var(stdin.VIRTUAL_NUMBER)
+caller_id       = get_stdn_var(stdin.CALLER_ID)
+
 # - Runs a loop to read agi_ variables from stdin.
 # - Creates a dict with key => agi_ variables,
 #       val => agi_ var's value
 env             = set_agi_env()
-
-caller_id = env.get(dialplan.vars.AGI_CALLER_ID)
 
 hermes = Hermes(
     host_url,
