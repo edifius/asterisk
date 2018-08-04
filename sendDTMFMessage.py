@@ -18,7 +18,7 @@ dtmf_val        = get_stdn_var(stdin.DTMF)
 env = set_agi_env()
 
 __console.log('session id = {}, dtmfval = {}'.format(session_id, dtmf_val))
-caller_id = env.get(dialplan.vars.AGI_CALLER_ID)
+caller_id = get_stdn_var(stdin.CALLER_ID)
 hermes = Hermes(
     host_url,
     session_id,

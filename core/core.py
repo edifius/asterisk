@@ -39,6 +39,7 @@ hermes = Hermes(
 # ================================================================
 
 def send_init():
+    __console.log('about to make config request')
     fsm_response = hermes\
         .hermes_configuration()
 
@@ -47,10 +48,10 @@ def send_init():
     # Allows the dialplan program to access the variables
     # by processing FSM response
     hermes.set_variables_in_std(fsm_response)
-
+    __console.log('config variables set')
 
 def send_speech(file_descriptor):
-
+    __console.log('send sound file to API')
     fsm_response = hermes\
         .next_action_request('AUDIO', 'FLAC', file_descriptor, conv_format='FLAC')
 
@@ -95,12 +96,16 @@ def wait_until_sound():
 
 
 def create_flac_from(sound_samples):
+    __console.log('prepare flac format for writing to file')
     n_channels, fmt     = 1, Format('flac', 'pcm16')
-    caller_id           = env[dialplan.vars.AGI_CALLER_ID]
+    caller_id           = get_stdn_var(stdin.CALLER_ID)
+    __console.log('write to temp file')
     _, temp_sound_file  = mkstemp('TmpSpeechFile_' + caller_id + '.flac')
+    __console.log('prepare sound file')
     flac_file           = Sndfile(temp_sound_file, 'w', fmt, n_channels, constants.RAW_RATE)
 
     flac_file.write_frames(np.array(sound_samples))
+    __console.log('sound file saved')
     return temp_sound_file
 
 

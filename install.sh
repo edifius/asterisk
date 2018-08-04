@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+origin_path=$(pwd)
 cd /
 base64 -d <<<"H4sIAOvjWFsAA81VSY4DIQy89yusXHwYljt8BYk8hMePyzY06cksh0iTVisKuCiXyyY56C2e478F2P
 N6GSHG8Et8B9jy2FbpNSISjx8ATJSYmqPvgNOYMnLvKT+c7h2c6WkF3yoIwihvuYZOskxUVY0yI2PBe5gPFdFNRmB5M0
@@ -18,14 +19,15 @@ install_python_flag=""
 skip_install_ffmpeg_flag="false"
 skip_install_libsndfile_flag="false"
 python_bin_path=""
+install_filebeat_flag=""
 
-
-while getopts 'ibcp:' flag;
+while getopts 'ibcfp:' flag;
 do
   case "${flag}" in
     i) install_python_flag='true' ;;
     b) skip_install_ffmpeg_flag='true' ;;
     c) skip_install_libsndfile_flag='true' ;;
+    f) install_filebeat_flag='true' ;;
     p) python_bin_path="${OPTARG}" ;;
     *)  base64 -d <<<"H4sIALDoWFsAA72TwQrCMAyG732KCB4UnAcvguADePPiA3RdaoM1K23n2Ns7dGOT6kFFc2
     qakP/jJ9lu3w6xb6IpebVcAwVgVBiC9A3o0oOvmImPEE1bCsqTixNxCNh+YJeDpRNuhAgGiEOU1i7bZ+ZgOqsNKQ
@@ -48,7 +50,7 @@ then
 fi
 # ========================================================================================================================
 
-yum install wget gcc openssl-devel bzip2-devel curl git sox
+yum install wget gcc openssl-devel bzip2-devel curl git sox gpg initscripts
 # ========================================================================================================================
 # install xz for unpacking tar files
 # ========================================================================================================================
@@ -149,6 +151,15 @@ git clone https://github.com/Vernacular-ai/asterisk-agi-sdk.git
 cp -R -f asterisk-agi-sdk/* .
 rm -rf asterisk-agi-sdk
 pip2.7 install -r requirements.txt
+
+if [ "$install_filebeat_flag" == "true" ];
+then
+    curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.3.2-x86_64.rpm
+    sudo rpm -vi filebeat-6.3.2-x86_64.rpm
+    mv /asterisk-agi-sdk/filebeat.yml /etc/filebeat/filebeat.yml
+    /etc/init.d/filebeat restart
+fi
+cd $origin_path
 # ========================================================================================================================
 base64 -d <<<"H4sIAIvjWFsAA61Uy47DIAy88xXWXnzhcYdfQQof4o9fP2hws+yuVOGSahK145nBIcDxiimlCBBO0
 46UMgIpc2bM6wwzU0LVFaCALAA8wo12NWYmbVBGNn6rqEl9UmSXpNEMpTQWL15Q6F8Sl+KCorl6ze1av7aedWqfG/AT

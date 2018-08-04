@@ -1,6 +1,7 @@
 #!/usr/bin/vai-agi-python-path
 import sys
 import dialplan
+from file_logger import agi_file_logger
 
 # ================================================================
 # EAGI or AGI do not show print statements,
@@ -31,6 +32,12 @@ class AGIConsole(object):
             action=action,
             args_list_stringified=args_list_stringified
         )
+
+
+        agi_file_logger.error(payload)\
+            if log_type == 'stderr'\
+            else agi_file_logger.info(payload)
+
         __stdwriter.write(payload)
         __stdwriter.flush()
 

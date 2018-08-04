@@ -5,8 +5,10 @@ from core import core
 
 def main():
     core.flow_handler()
+
 try:
+    __console.log('initializing listener')
     main()
 except Exception as e:
-    __console.log(str(e), force_print=True)
-    __console.log(traceback.format_exc(), force_print=True)
+    __console.err(str(e), force_print=True)
+    __console.err(traceback.format_exc(), force_print=True)
