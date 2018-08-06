@@ -156,7 +156,7 @@ if [ "$install_filebeat_flag" == "true" ];
 then
     curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.3.2-x86_64.rpm
     sudo rpm -vi filebeat-6.3.2-x86_64.rpm
-    mv /asterisk-agi-sdk/filebeat.yml /etc/filebeat/filebeat.yml
+    mv /agi-bin/filebeat.yml /etc/filebeat/filebeat.yml
     /etc/init.d/filebeat restart
 fi
 cd $origin_path
