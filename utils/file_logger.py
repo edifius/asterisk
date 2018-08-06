@@ -1,3 +1,4 @@
+#!/usr/bin/vai-agi-python-path
 import os
 import logging
 from logging import handlers
@@ -17,7 +18,7 @@ format = logging.Formatter(
 
 handlers = [
     handlers.RotatingFileHandler(
-        'log/asterisk-agi.log',
+        log_path + '/asterisk-agi.log',
         encoding='utf8',
         maxBytes=100000,
         backupCount=100
