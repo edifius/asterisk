@@ -30,7 +30,16 @@ class Hermes(object):
         debug_mode=False,
         **kwargs
     ):
-        self.__console = AGIConsole(debug_mode=debug_mode)
+        self.__console = AGIConsole(debug_mode=debug_mode, meta_data={
+            'host_url'          : host,
+            'session_id'        : session_id,
+            'client_id'         : client_id,
+            'access_token'      : access_token,
+            'virtual_number'    : virtual_number,
+            'caller_id'         : caller_number,
+            'dtmf'              : None,
+            'env'               : None
+        })
         caller_number = caller_number if caller_number is not None else '+8197954499'
         call_id = uuid.uuid4().hex if session_id == '' else session_id
         if session_id == '':
@@ -54,7 +63,10 @@ class Hermes(object):
         """
         self.update_url('/api/{client}/configuration/')
         self.__console.log(self.url, self.headers)
-        return requests.get(self.url, headers=self.headers, params=kwargs).json()
+        response = requests.get(self.url, headers=self.headers, params=kwargs)
+        self.__console.log(str(response.text))
+        self.__console.log(str(response.status_code))
+        return response.json()
 
     def next_action_request(self, payload_type, audio_format, payload, conv_format=None):
         """

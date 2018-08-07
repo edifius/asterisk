@@ -1,7 +1,9 @@
 #!/usr/bin/vai-agi-python-path
 import sys
 import dialplan
+from inspect import getframeinfo, stack
 from file_logger import agi_file_logger
+
 
 # ================================================================
 # EAGI or AGI do not show print statements,
@@ -14,6 +16,7 @@ class AGIConsole(object):
         self.meta_data = meta_data
 
     def __console_base(self, log_type, command, action, *args, **kwargs):
+        caller = getframeinfo(stack()[1][0])
         force_print = 'force_print' in kwargs and kwargs['force_print']
         if not force_print and\
             not self.debug_mode and\
@@ -26,6 +29,10 @@ class AGIConsole(object):
 
         args_list_stringified = ', '.join([str(arg) for arg in args])\
             if args is not None else ''
+
+        if log_type != dialplan.commands.SET_VARIABLE:
+            args_list_stringified = '{}:{} - {}'\
+                .format(caller.filename, caller.lineno, args_list_stringified)
 
         __stdwriter = getattr(sys, log_type)
         payload = '{command} "{action}" "{args_list_stringified}"\n'.format(
@@ -42,12 +49,11 @@ class AGIConsole(object):
             'host_url'          : self.meta_data.get('base_url') if self.meta_data is not None else None,
             'session_id'        : self.meta_data.get('session_id') if self.meta_data is not None else None,
             'dtmf'              : self.meta_data.get('dtmf') if self.meta_data is not None else None,
-            'message'           : payload
         }
 
-        agi_file_logger.error(file_log_payload)\
+        agi_file_logger.error(payload, file_log_payload)\
             if log_type == 'stderr'\
-            else agi_file_logger.info(file_log_payload)
+            else agi_file_logger.info(payload, file_log_payload)
 
         __stdwriter.write(payload)
         __stdwriter.flush()
