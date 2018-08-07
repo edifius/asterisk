@@ -1,6 +1,5 @@
 #!/usr/bin/vai-agi-python-path
 import sys
-from utils.log import __console
 
 def get_stdn_var(idx):
     return sys.argv[idx].strip() \
@@ -17,4 +16,3 @@ def set_agi_env():
 def exit_AGI():
     sys.exit()
 
-__console.log('loaded ', __name__)
