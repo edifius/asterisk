@@ -9,9 +9,9 @@ from file_logger import agi_file_logger
 # which is even read by the dialplan,
 # so variables can be set/reset/manipulated etc.
 class AGIConsole(object):
-    def __init__(self, debug_mode=True, **kwargs):
+    def __init__(self, debug_mode=True, meta_data=None):
         self.debug_mode = debug_mode
-        self.kwargs = kwargs
+        self.meta_data = meta_data
 
     def __console_base(self, log_type, command, action, *args, **kwargs):
         force_print = 'force_print' in kwargs and kwargs['force_print']
@@ -35,13 +35,13 @@ class AGIConsole(object):
         )
 
         file_log_payload = {
-            'caller_number'     : self.kwargs.get('caller_id') if self.kwargs is not None else None,
-            'virtual_number'    : self.kwargs.get('virtual_id') if self.kwargs is not None else None,
-            'access_token'      : self.kwargs.get('access_token') if self.kwargs is not None else None,
-            'client_id'         : self.kwargs.get('client_id') if self.kwargs is not None else None,
-            'host_url'          : self.kwargs.get('base_url') if self.kwargs is not None else None,
-            'session_id'        : self.kwargs.get('session_id') if self.kwargs is not None else None,
-            'dtmf'              : self.kwargs.get('dtmf') if self.kwargs is not None else None,
+            'caller_number'     : self.meta_data.get('caller_id') if self.meta_data is not None else None,
+            'virtual_number'    : self.meta_data.get('virtual_id') if self.meta_data is not None else None,
+            'access_token'      : self.meta_data.get('access_token') if self.meta_data is not None else None,
+            'client_id'         : self.meta_data.get('client_id') if self.meta_data is not None else None,
+            'host_url'          : self.meta_data.get('base_url') if self.meta_data is not None else None,
+            'session_id'        : self.meta_data.get('session_id') if self.meta_data is not None else None,
+            'dtmf'              : self.meta_data.get('dtmf') if self.meta_data is not None else None,
             'message'           : payload
         }
 
