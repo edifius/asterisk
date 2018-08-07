@@ -6,7 +6,7 @@ import dialplan
 from utils.agi_logger import AGIConsole
 from utils import file_handler
 from utils.log import __console
-
+from utils.retry_api_call import requests_retry_session
 
 def create_hermes_headers(access_token, caller_number, call_id, virtual_number):
     return {
@@ -62,10 +62,13 @@ class Hermes(object):
         :returns: Configuration with next action defaults
         """
         self.update_url('/api/{client}/configuration/')
-        self.__console.log(self.url, self.headers)
-        response = requests.get(self.url, headers=self.headers, params=kwargs)
-        self.__console.log(str(response.text))
-        self.__console.log(str(response.status_code))
+        response = requests_retry_session().get(self.url, headers=self.headers, params=kwargs)
+        self.__console.log(**{
+            'url': self.url,
+            'headers': self.headers,
+            'response_text': str(response.text),
+            'response_status_code': str(response.status_code)
+        })
         return response.json()
 
     def next_action_request(self, payload_type, audio_format, payload, conv_format=None):
