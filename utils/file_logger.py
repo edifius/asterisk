@@ -85,11 +85,7 @@ class JSONFormatter(logging.Formatter):
             'ts_readable': datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
         }
         log_message.update(meta_data)
-        log_record = {
-            'message': log_message
-        }
-
-        return log_record
+        return log_message
 
 handlers = [
     handlers.RotatingFileHandler(
