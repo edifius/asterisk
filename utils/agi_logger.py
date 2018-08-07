@@ -34,7 +34,7 @@ class AGIConsole(object):
         )
 
         file_log_payload = {
-            'caller_number'     : kwargs['caller_number'] if kwargs is not None else None,
+            'caller_number'     : kwargs['caller_id'] if kwargs is not None else None,
             'virtual_number'    : kwargs['virtual_id'] if kwargs is not None else None,
             'access_token'      : kwargs['access_token'] if kwargs is not None else None,
             'client_id'         : kwargs['client_id'] if kwargs is not None else None,
