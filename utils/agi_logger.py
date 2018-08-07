@@ -30,7 +30,7 @@ class AGIConsole(object):
         args_list_stringified = ', '.join([str(arg) for arg in args])\
             if args is not None else ''
 
-        if log_type != dialplan.commands.SET_VARIABLE:
+        if command != dialplan.commands.SET_VARIABLE:
             args_list_stringified = '{}:{} - {}'\
                 .format(caller.filename, caller.lineno, args_list_stringified)
 
