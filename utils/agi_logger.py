@@ -30,11 +30,8 @@ class AGIConsole(object):
         args_list_stringified = ', '.join([str(arg) for arg in args])\
             if args is not None else ''
 
-        if command != dialplan.commands.SET_VARIABLE:
-            args_list_stringified = '{}:{} - {}'\
-                .format(caller.filename, caller.lineno, args_list_stringified)
-
         __stdwriter = getattr(sys, log_type)
+
         payload = '{command} "{action}" "{args_list_stringified}"\n'.format(
             command=command,
             action=action,
@@ -42,18 +39,26 @@ class AGIConsole(object):
         )
 
         file_log_payload = {
-            'caller_number'     : self.meta_data.get('caller_id') if self.meta_data is not None else None,
-            'virtual_number'    : self.meta_data.get('virtual_number') if self.meta_data is not None else None,
-            'access_token'      : self.meta_data.get('access_token') if self.meta_data is not None else None,
-            'client_id'         : self.meta_data.get('client_id') if self.meta_data is not None else None,
-            'host_url'          : self.meta_data.get('base_url') if self.meta_data is not None else None,
-            'session_id'        : self.meta_data.get('session_id') if self.meta_data is not None else None,
-            'dtmf'              : self.meta_data.get('dtmf') if self.meta_data is not None else None,
+            'caller_number'         : self.meta_data.get('caller_id') if self.meta_data is not None else 'NA',
+            'virtual_number'        : self.meta_data.get('virtual_number') if self.meta_data is not None else 'NA',
+            'access_token'          : self.meta_data.get('access_token') if self.meta_data is not None else 'NA',
+            'client_id'             : self.meta_data.get('client_id') if self.meta_data is not None else 'NA',
+            'host_url'              : self.meta_data.get('base_url') if self.meta_data is not None else 'NA',
+            'session_id'            : self.meta_data.get('session_id') if self.meta_data is not None else 'NA',
+            'dtmf'                  : self.meta_data.get('dtmf') if self.meta_data is not None else 'NA',
+            'url'                   : 'NA',
+            'headers'               : 'NA',
+            'response_text'         : 'NA',
+            'response_status_code'  : 'NA'
         }
 
-        agi_file_logger.error(payload, file_log_payload)\
+        if len(kwargs):
+            file_log_payload.update(kwargs)
+
+
+        agi_file_logger.error(args_list_stringified, file_log_payload)\
             if log_type == 'stderr'\
-            else agi_file_logger.info(payload, file_log_payload)
+            else agi_file_logger.info(args_list_stringified, file_log_payload)
 
         __stdwriter.write(payload)
         __stdwriter.flush()
