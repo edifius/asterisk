@@ -3,6 +3,7 @@ import os
 from logging import handlers
 import json
 import logging
+import time
 from datetime import datetime
 
 
@@ -55,7 +56,7 @@ class JSONFormatter(logging.Formatter):
         message = log_record.getMessage()
         extra = self.extract_metadata(log_record)
 
-        json_log_record = self.json_log_record(message, extra, log_record)
+        json_log_record = self.json_log_record(message, extra)
         return self.to_json(json_log_record)
 
     def to_json(self, log_record):
@@ -80,7 +81,7 @@ class JSONFormatter(logging.Formatter):
         """
         log_message = {
             'message': message,
-            'timestamp': int((datetime.now().timestamp() * 1000)),
+            'timestamp': int((time.time() * 1000)),
             'ts_readable': datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
         }
         log_message.update(meta_data)
@@ -89,10 +90,6 @@ class JSONFormatter(logging.Formatter):
         }
 
         return log_record
-
-
-format = logging.Formatter(JSONFormatter())
-
 
 handlers = [
     handlers.RotatingFileHandler(
@@ -108,7 +105,7 @@ agi_file_logger = logging.getLogger()
 agi_file_logger.setLevel(logging.DEBUG)
 
 for handler in handlers:
-    handler.setFormatter(format)
+    handler.setFormatter(JSONFormatter())
     handler.setLevel(logging.DEBUG)
     agi_file_logger.addHandler(handler)
 
