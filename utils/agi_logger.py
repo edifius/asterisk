@@ -11,6 +11,7 @@ from file_logger import agi_file_logger
 class AGIConsole(object):
     def __init__(self, debug_mode=True, **kwargs):
         self.debug_mode = debug_mode
+        self.kwargs = kwargs
 
     def __console_base(self, log_type, command, action, *args, **kwargs):
         force_print = 'force_print' in kwargs and kwargs['force_print']
@@ -34,13 +35,13 @@ class AGIConsole(object):
         )
 
         file_log_payload = {
-            'caller_number'     : kwargs.get('caller_id') if kwargs is not None else None,
-            'virtual_number'    : kwargs.get('virtual_id') if kwargs is not None else None,
-            'access_token'      : kwargs.get('access_token') if kwargs is not None else None,
-            'client_id'         : kwargs.get('client_id') if kwargs is not None else None,
-            'host_url'          : kwargs.get('base_url') if kwargs is not None else None,
-            'session_id'        : kwargs.get('session_id') if kwargs is not None else None,
-            'dtmf'              : kwargs.get('dtmf') if kwargs is not None else None,
+            'caller_number'     : self.kwargs.get('caller_id') if self.kwargs is not None else None,
+            'virtual_number'    : self.kwargs.get('virtual_id') if self.kwargs is not None else None,
+            'access_token'      : self.kwargs.get('access_token') if self.kwargs is not None else None,
+            'client_id'         : self.kwargs.get('client_id') if self.kwargs is not None else None,
+            'host_url'          : self.kwargs.get('base_url') if self.kwargs is not None else None,
+            'session_id'        : self.kwargs.get('session_id') if self.kwargs is not None else None,
+            'dtmf'              : self.kwargs.get('dtmf') if self.kwargs is not None else None,
             'message'           : payload
         }
 
