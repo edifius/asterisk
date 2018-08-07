@@ -2,7 +2,7 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-    - /var/lib/asterisk/agi-bin/asterisk-agi-sdk/log/*.log
+    - /var/lib/asterisk/agi-bin/log/*.log
 
 filebeat.config.modules:
   path: ${path.config}/modules.d/*.yml

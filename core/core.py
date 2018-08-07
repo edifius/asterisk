@@ -3,29 +3,23 @@ import numpy as np
 import dialplan
 
 from scikits.audiolab import Format, Sndfile
-
 from tempfile import mkstemp
 from constants import constants
+from fsm_interface.hermes import Hermes
+from utils.read_stdin import get_stdn_var, exit_AGI
+from dialplan import stdin
 from utils import helper_functions as fn
 from utils.log import __console
-from fsm_interface.hermes import Hermes
-from utils.read_stdin import get_stdn_var, set_agi_env, exit_AGI
-from dialplan import stdin
+from utils import sys_vars
 
-# ================================================================
-# uuid - to identify a user and the
-# user's state in the state machine
-host_url        = get_stdn_var(stdin.HOST)
-session_id      = get_stdn_var(stdin.SESSION_ID)
-client_id       = get_stdn_var(stdin.CLIENT_ID)
-access_token    = get_stdn_var(stdin.ACCESS_TOKEN)
-virtual_number  = get_stdn_var(stdin.VIRTUAL_NUMBER)
-caller_id       = get_stdn_var(stdin.CALLER_ID)
 
-# - Runs a loop to read agi_ variables from stdin.
-# - Creates a dict with key => agi_ variables,
-#       val => agi_ var's value
-env             = set_agi_env()
+host_url        = sys_vars.host_url
+session_id      = sys_vars.session_id
+client_id       = sys_vars.client_id
+access_token    = sys_vars.access_token
+virtual_number  = sys_vars.caller_id
+caller_id       = sys_vars.virtual_number
+
 
 hermes = Hermes(
     host_url,
@@ -36,7 +30,6 @@ hermes = Hermes(
     virtual_number,
     debug_mode=True
 )
-# ================================================================
 
 def send_init():
     __console.log('about to make config request')

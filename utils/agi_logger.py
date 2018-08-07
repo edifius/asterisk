@@ -9,7 +9,7 @@ from file_logger import agi_file_logger
 # which is even read by the dialplan,
 # so variables can be set/reset/manipulated etc.
 class AGIConsole(object):
-    def __init__(self, debug_mode=True):
+    def __init__(self, debug_mode=True, **kwargs):
         self.debug_mode = debug_mode
 
     def __console_base(self, log_type, command, action, *args, **kwargs):
@@ -33,10 +33,19 @@ class AGIConsole(object):
             args_list_stringified=args_list_stringified
         )
 
+        file_log_payload = {
+            'caller_number'     : kwargs['caller_number'],
+            'virtual_number'    : kwargs['virtual_id'],
+            'access_token'      : kwargs['access_token'],
+            'client_id'         : kwargs['client_id'],
+            'HostUrl'           : kwargs['base_url'],
+            # 'SessionId'         : session_id,
+            'message'           : payload
+        }
 
-        agi_file_logger.error(payload)\
+        agi_file_logger.error(file_log_payload)\
             if log_type == 'stderr'\
-            else agi_file_logger.info(payload)
+            else agi_file_logger.info(file_log_payload)
 
         __stdwriter.write(payload)
         __stdwriter.flush()
