@@ -63,7 +63,7 @@ class Hermes(object):
         """
         self.update_url('/api/{client}/configuration/')
         response = requests_retry_session().get(self.url, headers=self.headers, params=kwargs)
-        self.__console.log(**{
+        self.__console.log('Configuration api response', **{
             'url': self.url,
             'headers': self.headers,
             'response_text': str(response.text),
@@ -99,7 +99,7 @@ class Hermes(object):
             file_data = {'payload': open(payload, 'rb')}
             self.update_url('/api/{client}/configuration/')
             response = requests.post(self.url, data=data, files=file_data, headers=self.headers)
-            self.__console.log(**{
+            self.__console.log('call flow audio response', **{
                 'url': self.url,
                 'headers': self.headers,
                 'response_text': str(response.text),
@@ -110,7 +110,7 @@ class Hermes(object):
         elif payload_type == 'DTMF':
             data = {'payload_type': payload_type, 'payload': payload}
             response = requests.post(self.url, data=data, headers=self.headers)
-            self.__console.log(**{
+            self.__console.log('call flow dtmf response', **{
                 'url': self.url,
                 'headers': self.headers,
                 'response_text': str(response.text),
