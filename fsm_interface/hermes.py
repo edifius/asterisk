@@ -69,7 +69,11 @@ class Hermes(object):
             'response_text': str(response.text),
             'response_status_code': str(response.status_code)
         })
-        return response.json()
+        try:
+            return response.json()
+        except Exception as e:
+            self.__console.log('Response error', str(e))
+
 
     def next_action_request(self, payload_type, audio_format, payload, conv_format=None):
         """
@@ -93,12 +97,26 @@ class Hermes(object):
                 'audio_conversion_format': conv_format
             }
             file_data = {'payload': open(payload, 'rb')}
-            return requests.post(self.url, data=data, files=file_data, headers=self.headers)\
-                .json()
+            self.update_url('/api/{client}/configuration/')
+            response = requests_retry_session().post(self.url, data=data, files=file_data, headers=self.headers)
+            self.__console.log(**{
+                'url': self.url,
+                'headers': self.headers,
+                'response_text': str(response.text),
+                'response_status_code': str(response.status_code)
+            })
+            return response.json()
 
         elif payload_type == 'DTMF':
             data = {'payload_type': payload_type, 'payload': payload}
-            return requests.post(self.url, data=data, headers=self.headers).json()
+            response = requests_retry_session().post(self.url, data=data, headers=self.headers)
+            self.__console.log(**{
+                'url': self.url,
+                'headers': self.headers,
+                'response_text': str(response.text),
+                'response_status_code': str(response.status_code)
+            })
+            return response.json()
 
     def get_params_from(self, fsm_response):
         self.__console.log('response {}'.format(fsm_response))
