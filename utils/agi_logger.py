@@ -36,7 +36,7 @@ class AGIConsole(object):
 
         file_log_payload = {
             'caller_number'     : self.meta_data.get('caller_id') if self.meta_data is not None else None,
-            'virtual_number'    : self.meta_data.get('virtual_id') if self.meta_data is not None else None,
+            'virtual_number'    : self.meta_data.get('virtual_number') if self.meta_data is not None else None,
             'access_token'      : self.meta_data.get('access_token') if self.meta_data is not None else None,
             'client_id'         : self.meta_data.get('client_id') if self.meta_data is not None else None,
             'host_url'          : self.meta_data.get('base_url') if self.meta_data is not None else None,
