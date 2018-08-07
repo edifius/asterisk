@@ -98,7 +98,7 @@ class Hermes(object):
             }
             file_data = {'payload': open(payload, 'rb')}
             self.update_url('/api/{client}/configuration/')
-            response = requests_retry_session().post(self.url, data=data, files=file_data, headers=self.headers)
+            response = requests.post(self.url, data=data, files=file_data, headers=self.headers)
             self.__console.log(**{
                 'url': self.url,
                 'headers': self.headers,
@@ -109,7 +109,7 @@ class Hermes(object):
 
         elif payload_type == 'DTMF':
             data = {'payload_type': payload_type, 'payload': payload}
-            response = requests_retry_session().post(self.url, data=data, headers=self.headers)
+            response = requests.post(self.url, data=data, headers=self.headers)
             self.__console.log(**{
                 'url': self.url,
                 'headers': self.headers,
