@@ -38,8 +38,9 @@ class AGIConsole(object):
             'virtual_number'    : kwargs.get('virtual_id') if kwargs is not None else None,
             'access_token'      : kwargs.get('access_token') if kwargs is not None else None,
             'client_id'         : kwargs.get('client_id') if kwargs is not None else None,
-            'HostUrl'           : kwargs.get('base_url') if kwargs is not None else None,
-            'SessionId'         : kwargs.get('session_id') if kwargs is not None else None,
+            'host_url'          : kwargs.get('base_url') if kwargs is not None else None,
+            'session_id'        : kwargs.get('session_id') if kwargs is not None else None,
+            'dtmf'              : kwargs.get('dtmf') if kwargs is not None else None,
             'message'           : payload
         }
 
