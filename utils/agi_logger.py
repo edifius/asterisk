@@ -34,12 +34,12 @@ class AGIConsole(object):
         )
 
         file_log_payload = {
-            'caller_number'     : kwargs['caller_number'],
-            'virtual_number'    : kwargs['virtual_id'],
-            'access_token'      : kwargs['access_token'],
-            'client_id'         : kwargs['client_id'],
-            'HostUrl'           : kwargs['base_url'],
-            # 'SessionId'         : session_id,
+            'caller_number'     : kwargs['caller_number'] if kwargs is not None else None,
+            'virtual_number'    : kwargs['virtual_id'] if kwargs is not None else None,
+            'access_token'      : kwargs['access_token'] if kwargs is not None else None,
+            'client_id'         : kwargs['client_id'] if kwargs is not None else None,
+            'HostUrl'           : kwargs['base_url'] if kwargs is not None else None,
+            'SessionId'         : kwargs['session_id'] if kwargs is not None else None,
             'message'           : payload
         }
 
