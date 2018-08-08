@@ -53,10 +53,11 @@ class JSONFormatter(logging.Formatter):
         """
         Returns the resulting string after formatting.
         """
-        message = log_record.getMessage()
-        extra = self.extract_metadata(log_record)
+        level = log_record.levelname
+        message = log_record.msg
+        extra = log_record.args
 
-        json_log_record = self.json_log_record(message, extra)
+        json_log_record = self.json_log_record(level, message, extra)
         return self.to_json(json_log_record)
 
     def to_json(self, log_record):
@@ -65,21 +66,12 @@ class JSONFormatter(logging.Formatter):
         """
         return json.dumps(log_record)
 
-    def extract_metadata(self, log_record):
-        """
-        Extract the additional key value params given (by 'extra' kwarg) to the logger.
-        """
-        return {
-            attr_name: log_record.__dict__[attr_name]
-            for attr_name in log_record.__dict__
-            if attr_name not in RESERVED_ATTRS
-        }
-
-    def json_log_record(self, message, meta_data):
+    def json_log_record(self, level, message, meta_data):
         """
         Prepares a dictionary (JSON) to be logged.
         """
         log_message = {
+            'log_level': level,
             'message': message,
             'timestamp': int((time.time() * 1000)),
             'ts_readable': datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -104,5 +96,6 @@ for handler in handlers:
     handler.setFormatter(JSONFormatter())
     handler.setLevel(logging.DEBUG)
     agi_file_logger.addHandler(handler)
+
 
 
