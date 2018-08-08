@@ -97,8 +97,7 @@ class Hermes(object):
                 'audio_conversion_format': conv_format
             }
             file_data = {'payload': open(payload, 'rb')}
-            self.update_url('/api/{client}/configuration/')
-            response = requests.post(self.url, data=data, files=file_data, headers=self.headers)
+            response = requests_retry_session().post(self.url, data=data, files=file_data, headers=self.headers)
             self.__console.log('call flow audio response', **{
                 'url': self.url,
                 'headers': self.headers,
@@ -109,7 +108,7 @@ class Hermes(object):
 
         elif payload_type == 'DTMF':
             data = {'payload_type': payload_type, 'payload': payload}
-            response = requests.post(self.url, data=data, headers=self.headers)
+            response = requests_retry_session().post(self.url, data=data, headers=self.headers)
             self.__console.log('call flow dtmf response', **{
                 'url': self.url,
                 'headers': self.headers,
