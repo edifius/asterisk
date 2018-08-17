@@ -66,5 +66,3 @@ def download(url):
     directories         = directory_structure[:-1]
     make_nested_directories(directories)
     return download_if_absent(url, file_path)
-
-__console.log('loaded ', __name__)

@@ -159,4 +159,3 @@ class Hermes(object):
             self.__console.log(*action_set[next_action])
             self.__console.set_var(*action_set[next_action])
 
-__console.log('loaded ', __name__)

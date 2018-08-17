@@ -123,5 +123,3 @@ def flow_handler():
         __console.log('Sending .flac file to FSM')
         send_speech(sound_file)
 
-
-__console.log('loaded ', __name__)

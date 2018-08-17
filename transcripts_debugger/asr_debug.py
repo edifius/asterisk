@@ -41,4 +41,3 @@ class DebugTranscripts(object):
             for result in response.results:
                 log.__console.log('Transcript: {}\n\n'.format(result.alternatives[0].transcript))
 
-log.__console.log('loaded', __name__)
