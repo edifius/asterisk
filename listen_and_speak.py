@@ -1,8 +1,16 @@
 #!/usr/bin/vai-agi-python-path
 import traceback
+import signal
 from utils.log import __console
 from core import core
 import dialplan
+
+
+def capture_user_hangup(signum, frame):
+    __console.log('captured', signum)
+
+
+signal.signal(signal.SIGHUP, capture_user_hangup)
 
 
 try:

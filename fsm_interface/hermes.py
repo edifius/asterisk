@@ -125,16 +125,22 @@ class Hermes(object):
         resource_url                = response_action.get('resource')
         resource_name               = resource_url.split('/')[-1]
         resource_name_gsm           = resource_name.replace('.mp3', '')
-
-        return resource_url, response_action_expected, resource_name_gsm
+        dtmf_max_digits             = response_action.get('max_digits', '1')
+        dtmf_max_wait_time          = response_action.get('max_wait_time', '10')
+        return resource_url, response_action_expected, resource_name_gsm, dtmf_max_digits, dtmf_max_wait_time
 
     def set_variables_in_std(self, fsm_response):
-        resource_url, next_action, resource_name_gsm = self.get_params_from(fsm_response)
+        resource_url, next_action, resource_name_gsm, \
+        dtmf_max_digits, dtmf_max_wait_time = self.get_params_from(fsm_response)
+
         # ========================================================================
         # PLAY_FILE is the name of the file to be streamed to a caller
         # ========================================================================
         file_path = file_handler.download(resource_url)
         self.__console.set_var(dialplan.vars.PLAY_FILE, file_path)
+        self.__console.set_var(dialplan.vars.RECORD_MODE, next_action)
+        self.__console.set_var(dialplan.vars.DTMF_MAX_DIGITS, dtmf_max_digits)
+        self.__console.set_var(dialplan.vars.MAX_WAIT_TIME, dtmf_max_wait_time)
         # ========================================================================
         # Extra actions apart from the PLAY_FILE that have to be performed,
         # are set here for the dialplan to use.

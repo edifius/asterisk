@@ -56,9 +56,14 @@ class AGIConsole(object):
             file_log_payload.update(kwargs)
 
 
-        agi_file_logger.error(args_list_stringified, file_log_payload)\
+
+        file_logger_message = args_list_stringified \
+            if command == dialplan.commands.EXEC and action == dialplan.actions.NOOP \
+            else payload
+
+        agi_file_logger.error(file_logger_message, file_log_payload)\
             if log_type == 'stderr'\
-            else agi_file_logger.info(args_list_stringified, file_log_payload)
+            else agi_file_logger.info(file_logger_message, file_log_payload)
 
         __stdwriter.write(payload)
         __stdwriter.flush()
