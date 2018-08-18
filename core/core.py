@@ -46,7 +46,7 @@ def send_init():
 
 def send_speech_to_google(audio_file):
     __console.log('We are Now transcribing the audio.flac')
-    __console.log( type(audio_file) )
+    __console.log( 'This is the audio file' + audio_file )
     #with audio_file as source:
        #audio = r.record(source)
     ##r = sr.recognize_google_cloud(audio)
