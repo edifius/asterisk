@@ -52,7 +52,7 @@ def send_speech_to_google(audio_file):
     file = sr.AudioFile(audio_file)
     with file as source:
         audio = r.record(source)
-    r.recognize_google_cloud(audio)
+    r.recognize_google(audio)
     __console.log('The response from Google Cloud: ' + r)
 
 
