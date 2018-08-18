@@ -12,6 +12,7 @@ from utils import helper_functions as fn
 from utils.log import __console
 from utils import sys_vars
 
+import speech_recognition as sr
 
 host_url        = sys_vars.host_url
 session_id      = sys_vars.session_id
@@ -43,8 +44,12 @@ def send_init():
     hermes.set_variables_in_std(fsm_response)
     __console.log('config variables set')
 
-def send_speech_to_google(file):
+def send_speech_to_google(audio_file):
     __console.log('We are Now transcribing the audio.flac')
+    with audio_file as source:
+       audio = r.record(source)
+    r = sr.recognize_google_cloud(audio)
+    __console.log('The response from Google Cloud: ' + r)
 
 
 def send_speech(file_descriptor):
