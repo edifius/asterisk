@@ -22,7 +22,7 @@ SILENCE_TIMEOUT_THRESHOLD = 43096
 SILENCE_TIMEOUT_CHUNK   = 16384
 RAW_RATE                = 8000
 CHUNK                   = 1024
-VOLUME_THRESHOLD        = 30
+VOLUME_THRESHOLD        = 10000
 
 
 # ================================================================
