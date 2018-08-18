@@ -79,6 +79,8 @@ def record_speech(timeout_threshold, silence_timeout_chunk, sound_array):
 def wait_until_sound():
     _silence_ctr, samples = 0, [0]
     while fn.rms(samples) < constants.VOLUME_THRESHOLD:
+        __console.log('fn.samples' + str(fn.rms(samples)) )
+        __console.log( str(constants.VOLUME_THRESHOLD) )
         # Input Real-time Data Raw Audio from Asterisk
         raw_samples = constants.FILE_DESCRIPTOR.read(constants.CHUNK)
         samples = np.fromstring(raw_samples, dtype=np.int16)
