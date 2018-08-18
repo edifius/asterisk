@@ -1,4 +1,4 @@
-#!/usr/bin/vai-agi-python-path
+#!/usr/bin/python
 from utils.agi_logger import AGIConsole
 from utils import sys_vars
 

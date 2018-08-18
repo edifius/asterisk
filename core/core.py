@@ -1,4 +1,4 @@
-#!/usr/bin/vai-agi-python-path
+#!/usr/bin/python
 import numpy as np
 import dialplan
 
@@ -42,6 +42,10 @@ def send_init():
     # by processing FSM response
     hermes.set_variables_in_std(fsm_response)
     __console.log('config variables set')
+
+def send_speech_to_google(file):
+    __console.log('We are Now transcribing the audio.flac')
+
 
 def send_speech(file_descriptor):
     __console.log('send sound file to API')
@@ -121,5 +125,5 @@ def flow_handler():
         sound_file = create_flac_from(sound_samples)
 
         __console.log('Sending .flac file to FSM')
-        send_speech(sound_file)
+        send_speech_to_google(sound_file)
 

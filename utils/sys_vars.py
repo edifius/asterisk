@@ -1,4 +1,4 @@
-#!/usr/bin/vai-agi-python-path
+#!/usr/bin/python
 from utils.read_stdin import get_stdn_var, set_agi_env
 from dialplan import stdin
 

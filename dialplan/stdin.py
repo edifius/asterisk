@@ -1,4 +1,4 @@
-#!/usr/bin/vai-agi-python-path
+#!/usr/bin/python
 HOST            = 1
 SESSION_ID      = 2
 CLIENT_ID       = 3

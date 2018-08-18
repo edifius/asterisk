@@ -1,4 +1,4 @@
-#!/usr/bin/vai-agi-python-path
+#!/usr/bin/python
 from unittest import TestCase
 from utils import file_handler
 

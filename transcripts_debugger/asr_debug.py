@@ -1,4 +1,4 @@
-#!/usr/bin/vai-agi-python-path
+#!/usr/bin/python
 import sys
 import io
 from google.oauth2 import service_account

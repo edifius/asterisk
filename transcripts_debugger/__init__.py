@@ -1,1 +1,1 @@
-#!/usr/bin/vai-agi-python-path
+#!/usr/bin/python

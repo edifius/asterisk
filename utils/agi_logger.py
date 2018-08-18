@@ -1,4 +1,4 @@
-#!/usr/bin/vai-agi-python-path
+#!/usr/bin/python
 import sys
 import dialplan
 from inspect import getframeinfo, stack

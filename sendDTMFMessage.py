@@ -1,4 +1,4 @@
-#!/usr/bin/vai-agi-python-path
+#!/usr/bin/python
 from fsm_interface.hermes import Hermes
 from utils.log import __console
 from utils.read_stdin import set_agi_env
