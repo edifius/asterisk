@@ -13,6 +13,7 @@ from utils.log import __console
 from utils import sys_vars
 
 import speech_recognition as sr
+r = sr.Recognizer()
 
 host_url        = sys_vars.host_url
 session_id      = sys_vars.session_id
@@ -47,10 +48,11 @@ def send_init():
 def send_speech_to_google(audio_file):
     __console.log('We are Now transcribing the audio.flac')
     __console.log( 'This is the audio file' + audio_file )
+
     file = sr.AudioFile(audio_file)
     with file as source:
         audio = r.record(source)
-    r = sr.recognize_google_cloud(audio)
+    r.recognize_google_cloud(audio)
     __console.log('The response from Google Cloud: ' + r)
 
 
