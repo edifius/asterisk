@@ -90,6 +90,8 @@ def wait_until_sound():
             __console.log('Time Out No Speech Detected ...')
             exit_AGI()
 
+    __console.log('fn.samples: ' + str(fn.rms(samples)) )
+    __console.log( str(constants.VOLUME_THRESHOLD) )
     __console.log('Speech Detected Recording...')
     return samples
 
