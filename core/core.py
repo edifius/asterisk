@@ -52,8 +52,8 @@ def send_speech_to_google(audio_file):
     file = sr.AudioFile(audio_file)
     with file as source:
         audio = r.record(source)
-    r.recognize_google(audio)
-    __console.log('The response from Google Cloud: ' + r)
+    response_text = r.recognize_google(audio)
+    __console.log('The response from Google Cloud: ' + response_text)
 
 
 def send_speech(file_descriptor):
