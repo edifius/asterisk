@@ -111,6 +111,7 @@ def create_flac_from(sound_samples):
 
 
 def flow_handler():
+    while True:
         __console.log('Hello Waiting For Speech')
         sound_array = wait_until_sound()
 
