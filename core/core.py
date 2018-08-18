@@ -107,10 +107,6 @@ def create_flac_from(sound_samples):
 
 
 def flow_handler():
-    if len(session_id) == 0:
-        __console.log('launch init API')
-        send_init()
-    else:
         __console.log('Hello Waiting For Speech')
         sound_array = wait_until_sound()
 
