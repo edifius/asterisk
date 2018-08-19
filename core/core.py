@@ -53,7 +53,7 @@ def send_speech_to_google(audio_file):
     with file as source:
         audio = r.record(source)
     
-    try
+    try:
         response_text = r.recognize_google(audio)
     except Exception as e:
         __console.log("There was an error with transcription: " + str(e))
