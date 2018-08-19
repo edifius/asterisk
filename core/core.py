@@ -47,17 +47,16 @@ def send_init():
 
 def send_speech_to_google(audio_file):
     __console.log('We are Now transcribing the audio.flac')
-    __console.log( 'This is the audio file' + audio_file )
 
-    file = sr.AudioFile(audio_file)
-    with file as source:
-        audio = r.record(source)
-    
     try:
+        file = sr.AudioFile(audio_file)
+        with file as source:
+            audio = r.record(source)
         response_text = r.recognize_google(audio)
+        __console.log('The response from Google Cloud: ' + response_text)
     except Exception as e:
         __console.log("There was an error with transcription: " + str(e))
-    __console.log('The response from Google Cloud: ' + response_text)
+    
 
 
 def send_speech(file_descriptor):
