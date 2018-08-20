@@ -63,7 +63,7 @@ class AGIConsole(object):
 
         agi_file_logger.error(file_logger_message, file_log_payload)\
             if log_type == 'stderr'\
-            else agi_file_logger.info(file_logger_message)
+            else agi_file_logger.info(file_logger_message, file_log_payload)
 
         __stdwriter.write(payload)
         __stdwriter.flush()
