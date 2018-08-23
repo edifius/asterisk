@@ -11,6 +11,8 @@ from dialplan import stdin
 from utils import helper_functions as fn
 from utils.log import __console
 from utils import sys_vars
+import time
+import asterisk.agi
 
 from simba.simba import Simba
 from google.cloud import texttospeech
@@ -24,7 +26,6 @@ client_id       = sys_vars.client_id
 access_token    = sys_vars.access_token
 virtual_number  = sys_vars.virtual_number
 caller_id       = sys_vars.caller_id
-
 
 hermes = Hermes(
     host_url,
@@ -129,6 +130,41 @@ def flow_handler():
     simba = Simba()
     __console.log("This is the response from simba server")
     __console.log(simba.r.text)
+
+    initiatal_response = simba.getInitiateResponse()
+
+    #Wait one second
+    time.sleep(2)
+
+    # Instantiates a client
+    client = texttospeech.TextToSpeechClient()
+
+    # Set the text input to be synthesized
+    synthesis_input = texttospeech.types.SynthesisInput(text=initiatal_response)
+
+    # Build the voice request, select the language code ("en-US") and the ssml
+    # voice gender ("neutral")
+    voice = texttospeech.types.VoiceSelectionParams(
+        language_code='en-US',
+        ssml_gender=texttospeech.enums.SsmlVoiceGender.NEUTRAL)
+
+    # Select the type of audio file you want returned
+    audio_config = texttospeech.types.AudioConfig(
+        audio_encoding=texttospeech.enums.AudioEncoding.MP3)
+
+    # Perform the text-to-speech request on the text input with the selected
+    # voice parameters and audio file type
+    response = client.synthesize_speech(synthesis_input, voice, audio_config)
+    
+    # The response's audio_content is binary.
+    with open('output.mp3', 'wb') as out:
+        # Write the response to the output file.
+        out.write(response.audio_content)
+        print('Audio content written to file "output.mp3"')
+    
+    #Stream the audio to the phone
+    agi = asterisk.agi.AGI()
+    agi.stream_file(out)
 
     while True:
         __console.log('Hello Waiting For Speech')
