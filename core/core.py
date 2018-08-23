@@ -164,7 +164,7 @@ def flow_handler():
         with open('output.mp3', 'wb') as out:
             # Write the response to the output file.
             out.write(response.audio_content)
-            print('Audio content written to file "output.mp3"')
+            __console.log('Audio content written to file "output.mp3"')
         
         #Stream the audio to the phone
         agi = asterisk.agi.AGI()
