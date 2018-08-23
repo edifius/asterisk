@@ -111,26 +111,6 @@ def wait_until_sound():
     __console.log('Speech Detected Recording...')
     return samples
 
-def stream_file( filename, escape_digits='', sample_offset=0):
-        """agi.stream_file(filename, escape_digits='', sample_offset=0) --> digit
-        Send the given file, allowing playback to be interrupted by the given
-        digits, if any.  escape_digits is a string '12345' or a list  of
-        ints [1,2,3,4,5] or strings ['1','2','3'] or mixed [1,'2',3,'4']
-        If sample offset is provided then the audio will seek to sample
-        offset before play starts.  Returns  digit if one was pressed.
-        Throws AGIError if the channel was disconnected.  Remember, the file
-        extension must not be included in the filename.
-        """
-        
-        response = execute('STREAM FILE', filename, escape_digits='', sample_offset)
-        res = response['result'][0]
-        if res == '0':
-            return ''
-        else:
-            try:
-                return chr(int(res))
-            except:
-                __console.log('Unable to convert result to char: %s' % res)
 
 def execute(self, command, *args):
 
