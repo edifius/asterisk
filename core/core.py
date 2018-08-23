@@ -12,6 +12,8 @@ from utils import helper_functions as fn
 from utils.log import __console
 from utils import sys_vars
 
+from simba import Simba
+
 import speech_recognition as sr
 r = sr.Recognizer()
 
@@ -122,6 +124,9 @@ def create_flac_from(sound_samples):
 
 
 def flow_handler():
+    #Create a new instance of Simba for every call
+    simba = Simba()
+    
     while True:
         __console.log('Hello Waiting For Speech')
         sound_array = wait_until_sound()

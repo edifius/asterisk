@@ -14,4 +14,4 @@ logging_meta_data = {
     'env'               : sys_vars.env
 }
 
-__console = AGIConsole(debug_mode=True)
+__console = AGIConsole(debug_mode=True, meta_data=logging_meta_data)

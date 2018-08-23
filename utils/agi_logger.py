@@ -61,9 +61,9 @@ class AGIConsole(object):
             if command == dialplan.commands.EXEC and action == dialplan.actions.NOOP \
             else payload
 
-        agi_file_logger.error(file_logger_message, file_log_payload)\
+        agi_file_logger.error(file_logger_message)\
             if log_type == 'stderr'\
-            else agi_file_logger.info(file_logger_message, file_log_payload)
+            else agi_file_logger.info(file_logger_message)
 
         __stdwriter.write(payload)
         __stdwriter.flush()
