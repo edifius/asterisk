@@ -190,14 +190,17 @@ def flow_handler():
 
         
         # The response's audio_content is binary.
-        with open('/etc/asterisk/eagi/asterisk-agi-sdk/output.mp3', 'wb') as out:
+        with open('/var/lib/asterisk/sounds/en/output.mp3', 'wb') as out:
             # Write the response to the output file.
             out.write(response.audio_content)
             __console.log('Audio File has been written to the disk')
 
         __console.log("We are about to stream the file")
         args = ("two", 3,5)
-        send_command('STREAM FILE', "/etc/asterisk/eagi/asterisk-agi-sdk/output.mp3", "", 0)
+        send_command('STREAM FILE', "//var/lib/asterisk/sounds/en/output.mp3", "", 0)
+
+        # /etc/asterisk/eagi/asterisk-agi-sdk/output.mp3
+        # /etc/asterisk/eagi/asterisk-agi-sdk
 
         
     except Exception as e:
