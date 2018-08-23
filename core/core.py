@@ -111,7 +111,7 @@ def wait_until_sound():
     __console.log('Speech Detected Recording...')
     return samples
 
-def stream_file(self, filename, escape_digits='', sample_offset=0):
+def stream_file( filename, escape_digits='', sample_offset=0):
         """agi.stream_file(filename, escape_digits='', sample_offset=0) --> digit
         Send the given file, allowing playback to be interrupted by the given
         digits, if any.  escape_digits is a string '12345' or a list  of
@@ -121,8 +121,8 @@ def stream_file(self, filename, escape_digits='', sample_offset=0):
         Throws AGIError if the channel was disconnected.  Remember, the file
         extension must not be included in the filename.
         """
-        escape_digits = self._process_digit_list(escape_digits)
-        response = self.execute('STREAM FILE', filename, escape_digits, sample_offset)
+        
+        response = execute('STREAM FILE', filename, escape_digits='', sample_offset)
         res = response['result'][0]
         if res == '0':
             return ''
@@ -130,13 +130,12 @@ def stream_file(self, filename, escape_digits='', sample_offset=0):
             try:
                 return chr(int(res))
             except:
-                raise AGIError('Unable to convert result to char: %s' % res)
+                __console.log('Unable to convert result to char: %s' % res)
 
 def execute(self, command, *args):
-        self.test_hangup()
 
         try:
-            self.send_command(command, *args)
+            send_command(command, *args)
             return self.get_result()
         except IOError,e:
             if e.errno == 32:
@@ -159,7 +158,7 @@ def create_flac_from(sound_samples):
     __console.log('sound file saved')
     return temp_sound_file
 
-def send_command(self, command, *args):
+def send_command( command, *args):
         """Send a command to Asterisk"""
         command = command.strip()
         command = '%s %s' % (command, ' '.join(map(str,args)))
@@ -215,7 +214,7 @@ def flow_handler():
             __console.log('Audio File has been written to the disk')
 
             __console.log("We are about to stream the file")
-            stream_file("/etc/asterisk/eagi/asterisk-agi-sdk/output.mp3")
+            send_command('STREAM FILE', filename="/etc/asterisk/eagi/asterisk-agi-sdk/output.mp3")
 
         
     except Exception as e:
