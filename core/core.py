@@ -159,9 +159,9 @@ def flow_handler():
     __console.log(simba.r.text)
 
     __console.log("Writing test file, find it")
-    with open('Failed.py', 'w') as file:
+    with open('/etc/asterisk/eagi/asterisk-agi-sdk/Failed.py', 'w') as file:
         file.write('whatever')
-        
+
     initiatal_response = simba.getInitiateResponse()
 
     try:
@@ -197,7 +197,7 @@ def flow_handler():
 
         __console.log("We are about to stream the file")
         args = ("two", 3,5)
-        send_command('STREAM FILE', out, "", 0)
+        send_command('STREAM FILE', "/etc/asterisk/eagi/asterisk-agi-sdk/output.mp3", "", 0)
 
         
     except Exception as e:
