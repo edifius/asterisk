@@ -12,6 +12,7 @@ from utils import helper_functions as fn
 from utils.log import __console
 from utils import sys_vars
 import time
+from asterisk.agi import *
 
 from simba.simba import Simba
 from google.cloud import texttospeech
@@ -160,16 +161,16 @@ def flow_handler():
         response = client.synthesize_speech(synthesis_input, voice, audio_config)
         
         #Stream the audio to the phone
-
+        agi = AGI()
+        agi.verbose("python agi started")
         
-        
+        __console.log('Audio File has been streamed')
         # The response's audio_content is binary.
         with open('output.mp3', 'wb') as out:
             
             # Write the response to the output file.
             out.write(response.audio_content)
-            __console.log('Audio File has been written to')
-            
+            agi.stream_file('output.mp3')
             
             
 
