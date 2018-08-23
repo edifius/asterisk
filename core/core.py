@@ -168,7 +168,13 @@ def flow_handler():
         
         #Stream the audio to the phone
         agi = asterisk.agi.AGI()
-        agi.stream_file(out)
+
+        with open("mynewtextfile.txt",mode="r") as file:
+            __console.log("Opened the mp3 file")
+            agi.stream_file(file)
+            __console.log("Finished streaming the mp3 file")
+
+
     except Exception as e:
         __console.log("This is the excpetion adrian: " + str(e))
 
