@@ -192,9 +192,9 @@ def flow_handler():
             out.write(response.audio_content)
             __console.log('Audio File has been written to the disk')
 
-            __console.log("We are about to stream the file")
-            args = ("two", 3,5)
-            send_command('STREAM FILE', "/etc/asterisk/eagi/asterisk-agi-sdk/output.mp3", "", 0)
+        __console.log("We are about to stream the file")
+        args = ("two", 3,5)
+        send_command('STREAM FILE', "/etc/asterisk/eagi/asterisk-agi-sdk/output.mp3", "", 0)
 
         
     except Exception as e:
