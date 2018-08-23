@@ -13,6 +13,7 @@ from utils.log import __console
 from utils import sys_vars
 import time
 from asterisk.agi import *
+import sys
 
 from simba.simba import Simba
 from google.cloud import texttospeech
@@ -110,6 +111,40 @@ def wait_until_sound():
     __console.log('Speech Detected Recording...')
     return samples
 
+def stream_file(self, filename, escape_digits='', sample_offset=0):
+        """agi.stream_file(filename, escape_digits='', sample_offset=0) --> digit
+        Send the given file, allowing playback to be interrupted by the given
+        digits, if any.  escape_digits is a string '12345' or a list  of
+        ints [1,2,3,4,5] or strings ['1','2','3'] or mixed [1,'2',3,'4']
+        If sample offset is provided then the audio will seek to sample
+        offset before play starts.  Returns  digit if one was pressed.
+        Throws AGIError if the channel was disconnected.  Remember, the file
+        extension must not be included in the filename.
+        """
+        escape_digits = self._process_digit_list(escape_digits)
+        response = self.execute('STREAM FILE', filename, escape_digits, sample_offset)
+        res = response['result'][0]
+        if res == '0':
+            return ''
+        else:
+            try:
+                return chr(int(res))
+            except:
+                raise AGIError('Unable to convert result to char: %s' % res)
+
+def execute(self, command, *args):
+        self.test_hangup()
+
+        try:
+            self.send_command(command, *args)
+            return self.get_result()
+        except IOError,e:
+            if e.errno == 32:
+                # Broken Pipe * let us go
+                raise AGISIGPIPEHangup("Received SIGPIPE")
+            else:
+                raise
+
 
 def create_flac_from(sound_samples):
     __console.log('prepare flac format for writing to file')
@@ -123,6 +158,17 @@ def create_flac_from(sound_samples):
     flac_file.write_frames(np.array(sound_samples))
     __console.log('sound file saved')
     return temp_sound_file
+
+def send_command(self, command, *args):
+        """Send a command to Asterisk"""
+        command = command.strip()
+        command = '%s %s' % (command, ' '.join(map(str,args)))
+        command = command.strip()
+        if command[-1] != '\n':
+            command += '\n'
+        sys.stderr.write('    COMMAND: %s' % command)
+        sys.stdout.write(command)
+        sys.stdout.flush()
 
 
 def flow_handler():
@@ -164,14 +210,14 @@ def flow_handler():
         
         # The response's audio_content is binary.
         with open('/etc/asterisk/eagi/asterisk-agi-sdk/output.mp3', 'wb') as out:
-            
             # Write the response to the output file.
             out.write(response.audio_content)
             __console.log('Audio File has been written to the disk')
-            
-            
 
+            __console.log("We are about to stream the file")
+            stream_file("/etc/asterisk/eagi/asterisk-agi-sdk/output.mp3")
 
+        
     except Exception as e:
         __console.log("This is the excpetion adrian: " + str(e))
 
