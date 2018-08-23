@@ -6,7 +6,7 @@ class Simba:
         self.r = requests.get("http://172.31.16.165:5000/initiatecall")
 
     def getInitiateResponse(self):
-        r = requests.get("http://172.31.16.165:5000//testInitatePickUp")
+        r = requests.get("http://172.31.16.165:5000/testInitatePickUp")
         return r.text
         
 
