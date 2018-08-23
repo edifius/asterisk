@@ -158,6 +158,10 @@ def flow_handler():
     __console.log("This is the response from simba server")
     __console.log(simba.r.text)
 
+    __console.log("Writing test file, find it")
+    with open('Failed.py', 'w') as file:
+    file.write('whatever')
+
     
     initiatal_response = simba.getInitiateResponse()
 
