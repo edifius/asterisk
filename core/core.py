@@ -164,7 +164,7 @@ def flow_handler():
         try:
             agi = asterisk.agi.AGI()
         except Exception as e:
-            __console.log("Here is the exception Adrian: " _ str(e))
+            __console.log("Here is the exception Adrian: " + str(e))
         __console.log('Audio File has been streamed')
         # The response's audio_content is binary.
         with open('output.mp3', 'wb') as out:
