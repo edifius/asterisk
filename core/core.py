@@ -162,10 +162,10 @@ def flow_handler():
 
         __console.log('Text To Speech Response: ')
         __console.log( response )
-        __console.log('Audio File has been streamed')
+        
         #Stream the audio to the phone
         agi = asterisk.agi.AGI()
-        
+        __console.log('Audio File has been streamed')
         # The response's audio_content is binary.
         with open('output.mp3', 'wb') as out:
             
