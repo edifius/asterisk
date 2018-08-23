@@ -159,12 +159,12 @@ def flow_handler():
         # Perform the text-to-speech request on the text input with the selected
         # voice parameters and audio file type
         response = client.synthesize_speech(synthesis_input, voice, audio_config)
-
-        __console.log('Text To Speech Response: ')
-        __console.log( response )
         
         #Stream the audio to the phone
-        agi = asterisk.agi.AGI()
+        try:
+            agi = asterisk.agi.AGI()
+        except Exception as e:
+            __console.log("Here is the exception Adrian: " _ str(e))
         __console.log('Audio File has been streamed')
         # The response's audio_content is binary.
         with open('output.mp3', 'wb') as out:
