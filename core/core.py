@@ -13,6 +13,7 @@ from utils.log import __console
 from utils import sys_vars
 
 from simba.simba import Simba
+from google.cloud import texttospeech
 
 import speech_recognition as sr
 r = sr.Recognizer()
