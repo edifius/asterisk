@@ -165,10 +165,11 @@ def flow_handler():
         
         # The response's audio_content is binary.
         with open('output.mp3', 'wb') as out:
+            __console.log('Audio File has been streamed')
             # Write the response to the output file.
             out.write(response.audio_content)
             #agi.stream_file(out)
-            __console.log('Audio File has been streamed')
+            
             
 
 
