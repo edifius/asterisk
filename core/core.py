@@ -159,18 +159,15 @@ def flow_handler():
         # Perform the text-to-speech request on the text input with the selected
         # voice parameters and audio file type
         response = client.synthesize_speech(synthesis_input, voice, audio_config)
+
         
-        #Stream the audio to the phone
-        agi = AGI()
-        agi.verbose("python agi started")
         
-        __console.log('Audio File has been streamed')
         # The response's audio_content is binary.
         with open('output.mp3', 'wb') as out:
             
             # Write the response to the output file.
             out.write(response.audio_content)
-            agi.stream_file('output.mp3')
+            __console.log('Audio File has been written to the disk')
             
             
 
