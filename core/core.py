@@ -133,19 +133,20 @@ def flow_handler():
     __console.log("This is the response from simba server")
     __console.log(simba.r.text)
 
+    
+    initiatal_response = simba.getInitiateResponse()
+
     try:
-        initiatal_response = simba.getInitiateResponse()
+        #Wait one second
+        time.sleep(2)
+
+        # Instantiates a client
+        client = texttospeech.TextToSpeechClient(credentials=credentials)
+
+        # Set the text input to be synthesized
+        synthesis_input = texttospeech.types.SynthesisInput(text=initiatal_response)
     except Exception as e:
-        print("The exception was: " + str(e) )
-
-    #Wait one second
-    time.sleep(2)
-
-    # Instantiates a client
-    client = texttospeech.TextToSpeechClient(credentials=credentials)
-
-    # Set the text input to be synthesized
-    synthesis_input = texttospeech.types.SynthesisInput(text=initiatal_response)
+        print("The exception is here: " + str(e) )
 
     # Build the voice request, select the language code ("en-US") and the ssml
     # voice gender ("neutral")
