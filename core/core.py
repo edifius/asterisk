@@ -160,12 +160,15 @@ def flow_handler():
         # voice parameters and audio file type
         response = client.synthesize_speech(synthesis_input, voice, audio_config)
 
+        __console.log('Text To Speech Response: ')
+        __console.log( response )
+        __console.log('Audio File has been streamed')
         #Stream the audio to the phone
         agi = asterisk.agi.AGI()
         
         # The response's audio_content is binary.
         with open('output.mp3', 'wb') as out:
-            __console.log('Audio File has been streamed')
+            
             # Write the response to the output file.
             out.write(response.audio_content)
             #agi.stream_file(out)
