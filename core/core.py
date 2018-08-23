@@ -163,7 +163,7 @@ def flow_handler():
         
         
         # The response's audio_content is binary.
-        with open('output.mp3', 'wb') as out:
+        with open('/etc/asterisk/eagi/asterisk-agi-sdk/output.mp3', 'wb') as out:
             
             # Write the response to the output file.
             out.write(response.audio_content)
