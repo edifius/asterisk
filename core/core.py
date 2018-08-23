@@ -133,7 +133,10 @@ def flow_handler():
     __console.log("This is the response from simba server")
     __console.log(simba.r.text)
 
-    initiatal_response = simba.getInitiateResponse()
+    try:
+        initiatal_response = simba.getInitiateResponse()
+    except Exception as e:
+        print("The exception was: " + str(e) )
 
     #Wait one second
     time.sleep(2)
