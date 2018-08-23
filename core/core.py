@@ -126,6 +126,8 @@ def create_flac_from(sound_samples):
 
 
 def flow_handler():
+    from google.oauth2 import service_account
+    credentials = service_account.Credentials.from_service_account_file("../creds.json")
     #Create a new instance of Simba for every call
     simba = Simba()
     __console.log("This is the response from simba server")
@@ -137,7 +139,7 @@ def flow_handler():
     time.sleep(2)
 
     # Instantiates a client
-    client = texttospeech.TextToSpeechClient()
+    client = texttospeech.TextToSpeechClient(credentials=credentials)
 
     # Set the text input to be synthesized
     synthesis_input = texttospeech.types.SynthesisInput(text=initiatal_response)
