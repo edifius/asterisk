@@ -126,6 +126,7 @@ def create_flac_from(sound_samples):
 def flow_handler():
     #Create a new instance of Simba for every call
     simba = Simba()
+    __console.log(simba.r)
 
     while True:
         __console.log('Hello Waiting For Speech')
