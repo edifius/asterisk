@@ -83,14 +83,25 @@ def send_response_to_phone( message ):
 
     
     # The response's audio_content is binary.
-    with open('/var/lib/asterisk/sounds/en/output', 'wb') as out:
+    with open('/var/lib/asterisk/sounds/en/output_test.mp3', 'wb') as out:
         # Write the response to the output file.
         out.write(response.audio_content)
         __console.log('Audio File has been written to the disk')
 
+    #Set The permission for the file to be read by everyone
+    os.chmod("/var/lib/asterisk/sounds/en/output", stat.S_IROTH)
+    uid = pwd.getpwnam("asterisk").pw_uid
+    gid = grp.getgrnam("asterisk").gr_gid
+    path = '/var/lib/asterisk/sounds/en/output_test.mp3'
+    os.chown(path, uid, gid)
+
     __console.log("We are about to stream the file")
     args = ("two", 3,5)
-    send_command('STREAM FILE', "/var/lib/asterisk/sounds/en/output", "", 0)
+    send_command('EXEC PLAYBACK', "output_test", "", 0)
+    #send_command('STREAM FILE', "demo-thanks", "", 0)
+    #send_command('Playback(demo-thanks)')
+    # /etc/asterisk/eagi/asterisk-agi-sdk/output.mp3
+    # /etc/asterisk/eagi/asterisk-agi-sdk
 
 
 def send_speech_to_google(audio_file):
