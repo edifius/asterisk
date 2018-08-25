@@ -207,6 +207,7 @@ def flow_handler():
     #Get the Initial Agent and send the response to Google
     send_response_to_phone(message=simba.get_initiate_message())
 
+'''
     while True:
         __console.log('Hello Waiting For Speech')
         sound_array = wait_until_sound()
@@ -223,4 +224,4 @@ def flow_handler():
 
         __console.log('Sending .flac file to FSM')
         send_speech_to_google(sound_file)
-
+'''
