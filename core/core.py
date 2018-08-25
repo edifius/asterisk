@@ -13,7 +13,7 @@ from utils.log import __console
 from utils import sys_vars
 import time
 from asterisk.agi import *
-import sys, os, pwd, grp
+import sys, os, pwd, grp, stat
 
 from simba.simba import Simba
 from google.cloud import texttospeech
