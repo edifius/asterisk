@@ -4,7 +4,7 @@ from utils.log import __console
 class Simba:
     def __init__(self):
         r = requests.get("http://172.31.16.165:5000/initiatecall")
-        r.json()
+        __console.log( r )
         self.call_id = r.json['callId']
         self.initialResponse = r.json['message']
 
