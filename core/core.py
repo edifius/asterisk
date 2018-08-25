@@ -58,12 +58,14 @@ def send_init():
     hermes.set_variables_in_std(fsm_response)
     __console.log('config variables set')
 
-def send_reponse_to_phone( message ):
+def get_respone_from_simba( message ):
     #Get the response from from Simba
-    response = simba.send_message(message)
+    return simba.send_message(message)
+
+def send_response_to_phone( message ):
 
     # Set the text input to be synthesized
-    synthesis_input = texttospeech.types.SynthesisInput(text=response)
+    synthesis_input = texttospeech.types.SynthesisInput(text=message)
 
     # Build the voice request, select the language code ("en-US") and the ssml
     # voice gender ("neutral")
@@ -100,8 +102,12 @@ def send_speech_to_google(audio_file):
             audio = r.record(source)
         response_text = r.recognize_google(audio)
         __console.log('The response from Google Cloud: ' + response_text)
+
+        #Get The response from Simba
+        response = get_respone_from_simba( message=response_text )
+
         ##send this text back to phone
-        send_reponse_to_phone(message=response_text)
+        send_response_to_phone(message=response)
 
     except Exception as e:
         __console.log("There was an error with transcription: " + str(e))
@@ -199,7 +205,7 @@ def send_command( command, *args):
 def flow_handler():
 
     #Get the Initial Agent and send the response to Google
-    send_reponse_to_phone(message=simba.get_initiate_message())
+    send_response_to_phone(message=simba.get_initiate_message())
 
     while True:
         __console.log('Hello Waiting For Speech')
