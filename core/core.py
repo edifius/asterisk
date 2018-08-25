@@ -18,8 +18,16 @@ import sys
 from simba.simba import Simba
 from google.cloud import texttospeech
 
+from google.oauth2 import service_account
+credentials = service_account.Credentials.from_service_account_file("/etc/asterisk/eagi/creds.json")
+# Instantiates a client
+client = texttospeech.TextToSpeechClient(credentials=credentials)
+
 import speech_recognition as sr
 r = sr.Recognizer()
+
+#Create a new instance of Simba for every call
+simba = Simba()
 
 host_url        = sys_vars.host_url
 session_id      = sys_vars.session_id
@@ -50,6 +58,39 @@ def send_init():
     hermes.set_variables_in_std(fsm_response)
     __console.log('config variables set')
 
+def send_reponse_to_phone( message ):
+    #Get the response from from Simba
+    response = simba.send_message(message)
+
+    # Set the text input to be synthesized
+    synthesis_input = texttospeech.types.SynthesisInput(text=response)
+
+    # Build the voice request, select the language code ("en-US") and the ssml
+    # voice gender ("neutral")
+    voice = texttospeech.types.VoiceSelectionParams(
+        language_code='en-US',
+        ssml_gender=texttospeech.enums.SsmlVoiceGender.NEUTRAL)
+
+    # Select the type of audio file you want returned
+    audio_config = texttospeech.types.AudioConfig(
+        audio_encoding=texttospeech.enums.AudioEncoding.MP3)
+
+    # Perform the text-to-speech request on the text input with the selected
+    # voice parameters and audio file type
+    response = client.synthesize_speech(synthesis_input, voice, audio_config)
+
+    
+    # The response's audio_content is binary.
+    with open('/var/lib/asterisk/sounds/en/output', 'wb') as out:
+        # Write the response to the output file.
+        out.write(response.audio_content)
+        __console.log('Audio File has been written to the disk')
+
+    __console.log("We are about to stream the file")
+    args = ("two", 3,5)
+    send_command('STREAM FILE', "/var/lib/asterisk/sounds/en/output", "", 0)
+
+
 def send_speech_to_google(audio_file):
     __console.log('We are Now transcribing the audio.flac')
 
@@ -59,6 +100,9 @@ def send_speech_to_google(audio_file):
             audio = r.record(source)
         response_text = r.recognize_google(audio)
         __console.log('The response from Google Cloud: ' + response_text)
+        ##send this text back to phone
+        send_reponse_to_phone(message=response_text)
+
     except Exception as e:
         __console.log("There was an error with transcription: " + str(e))
     
@@ -148,63 +192,14 @@ def send_command( command, *args):
         sys.stderr.write('    COMMAND: %s' % command)
         sys.stdout.write(command)
         sys.stdout.flush()
+        result = sys.stdin.readline().strip()
+        __console.log(result)
 
 
 def flow_handler():
-    from google.oauth2 import service_account
-    credentials = service_account.Credentials.from_service_account_file("/etc/asterisk/eagi/creds.json")
-    #Create a new instance of Simba for every call
-    simba = Simba()
-    __console.log("This is the response from simba server")
-    __console.log(simba.r.text)
 
-    __console.log("Writing test file, find it")
-    with open('/etc/asterisk/eagi/asterisk-agi-sdk/Failed.py', 'w') as file:
-        file.write('whatever')
-
-    initiatal_response = simba.getInitiateResponse()
-
-    try:
-        #Wait one second
-        time.sleep(2)
-
-        # Instantiates a client
-        client = texttospeech.TextToSpeechClient(credentials=credentials)
-
-        # Set the text input to be synthesized
-        synthesis_input = texttospeech.types.SynthesisInput(text=initiatal_response)
-
-        # Build the voice request, select the language code ("en-US") and the ssml
-        # voice gender ("neutral")
-        voice = texttospeech.types.VoiceSelectionParams(
-            language_code='en-US',
-            ssml_gender=texttospeech.enums.SsmlVoiceGender.NEUTRAL)
-
-        # Select the type of audio file you want returned
-        audio_config = texttospeech.types.AudioConfig(
-            audio_encoding=texttospeech.enums.AudioEncoding.MP3)
-
-        # Perform the text-to-speech request on the text input with the selected
-        # voice parameters and audio file type
-        response = client.synthesize_speech(synthesis_input, voice, audio_config)
-
-        
-        # The response's audio_content is binary.
-        with open('/var/lib/asterisk/sounds/en/output', 'wb') as out:
-            # Write the response to the output file.
-            out.write(response.audio_content)
-            __console.log('Audio File has been written to the disk')
-
-        __console.log("We are about to stream the file")
-        args = ("two", 3,5)
-        send_command('STREAM FILE', "/var/lib/asterisk/sounds/en/output", "", 0)
-
-        # /etc/asterisk/eagi/asterisk-agi-sdk/output.mp3
-        # /etc/asterisk/eagi/asterisk-agi-sdk
-
-        
-    except Exception as e:
-        __console.log("This is the excpetion adrian: " + str(e))
+    #Get the Initial Agent and send the response to Google
+    send_reponse_to_phone(message=simba.get_initiate_message())
 
     while True:
         __console.log('Hello Waiting For Speech')
