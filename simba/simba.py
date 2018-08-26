@@ -14,7 +14,7 @@ class Simba:
     
     def send_message(self, message):
         payload = {'message': message, 'callId': self.call_id}
-        reponse = requests.get("http://172.31.16.165:5000/sendMessage", params=payload)
+        r = requests.get("http://172.31.16.165:5000/sendMessage", params=payload)
         return r.text
 
     def get_initiate_message(self):
