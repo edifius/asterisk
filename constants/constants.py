@@ -3,13 +3,13 @@ import os
 
 
 # ================================================================
-# 10 s x 16000 samples/s x ( 16 bits / 8bits/byte ) = 160000 bytes
+# 20 s x 16000 samples/s x ( 16 bits / 8bits/byte ) = 160000 bytes
 # 160000 / 1024 = +/- 157
 # 157 * 1024 = 160768
 #
 # Default:
 # TimeoutSignal = 160768
-SILENCE_TIMEOUT_THRESHOLD = 43096
+SILENCE_TIMEOUT_THRESHOLD = 43096*2
 
 # ================================================================
 # 1s x 16000 = 16000
