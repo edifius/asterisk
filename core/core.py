@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import numpy as np
 import dialplan
-
+from time import sleep
 from scikits.audiolab import Format, Sndfile
 from tempfile import mkstemp
 from constants import constants
@@ -214,6 +214,9 @@ def send_command( command, *args):
 
 
 def flow_handler():
+    #sleep for 1 second
+    sleep(1)
+    
 
     #Get the Initial Agent and send the response to Google
     send_response_to_phone(message=simba.get_initiate_message())
